@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>What do the happiest countries in the world have in common?</title>
+		<script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+		<style type="text/css">
+
+		div.tooltip {
+			position: absolute;
+			text-align: center;
+			width: 60px;
+			height: 28px;
+			padding: 2px;
+			font: 12px sans-serif;
+			background: none;
+			border: 0px;
+			border-radius: 8px;
+			pointer-events: none;
+		}
+
+		</style>
+		<svg width="960" height="200"></svg>
+	</head>
+	<body>
+		<div id = "variableDropdown"></div>
+		<script type="text/javascript">
+		// code originated from https://bl.ocks.org/maegul/7d8e7342c649fdc077a6984e52da4b62
+
+		// set page dimensions
+
+var width = 960,
+	height = 250,
+	radius = 10;
+	padding = 10;
+
+var svg = d3.select('body').append('svg')
+			.attr('width', width)
+			.attr('height', height)
+
+// define a tooltip
+var div = d3.select("body").append("div")
+	.attr("class", "tooltip")
+	.style("opacity", 0);
+
+// formatting the data displayed in the tooltip
+var formatValue = d3.format(".2n");
+
+var selected_variable = 'world_happiness_score';
+
+d3.csv('country_data_non_missing.csv', function(data){
+
+	// define some useful scales
+	var radiusScale = d3.scaleLinear()
+		.domain(d3.extent(data, function(d) { return parseFloat(d.population) }))
+		.range([4, 25]);
+	var scaleColor = d3.scaleOrdinal()
+		.domain(["Scandinavian Europe", "Europe", "Israel", "New Zealand", "NA"])
+		.range(["#66c2a5", "#a6d854", "#fc8d62", "#8da0cb", "#D3D3D3"]);
+	var xScale = d3.scaleLinear()
+		.rangeRound([padding, width - padding])
+
+	// set domain for selected variable
+	xScale.domain(d3.extent(data, function(d) { return d[selected_variable]; }));
+
+
+	function tick(){
+
+		d3.selectAll('.circ')
+			.attr('cx', function(d){return d.x})
+			.attr('cy', function(d){return d.y})
+	}
+
+
+	var circles = svg.selectAll('.circ')
+		.data(data)
+		.enter().append('circle').classed('circ', true)
+		.attr('r', function(d) { return radiusScale(d.population); })
+		.attr('cx', function(d){ return xScale(d[selected_variable]); })
+		.attr('cy', function(){ return height/2; })
+		.attr("fill", function(d) { return scaleColor(d.region); })
+		.on('click', function(){
+			var circ = d3.select(this);
+
+			circ.style('stroke', '#56C6D8')
+				.style('stroke-width', 3)
+		})
+
+		circles.on("mouseover", function(d) {
+					div.transition()
+							.duration(200)
+							.style("opacity", .9);
+					div	.text(d.country + "\n"  + selected_variable + ": " + formatValue(d[selected_variable]))
+							.style("left", (d3.event.pageX) + "px")
+							.style("top", (d3.event.pageY - 28) + "px");
+					d3.select(this)
+						.attr("fill", scaleColor(d.region))
+						.attr("stroke", "#56C6D8")
+						.attr("stroke-width", 3)
+						.attr("r", function(d) { return radiusScale(d.population) + 3; });
+					})
+
+			.on("mouseout", function(d) {
+					div.transition()
+							.duration(500)
+							.style("opacity", 0);
+					d3.select(this)
+						.attr("fill", function(d) {return scaleColor(d.region); })
+						.attr("stroke-width", 0)
+						.attr("r", function(d) { return radiusScale(d.population); });
+			});
+
+
+
+	var simulation = d3.forceSimulation(data)
+		.force('x', d3.forceX(function(d){
+				return xScale(d[selected_variable])
+			}).strength(1)
+		)
+		.force('y', d3.forceY(height/4).strength(0.5))
+		.force('collide', d3.forceCollide(function(d) { return radiusScale(d.population); }))
+		.alpha(0.05)
+		.alphaTarget(0.2)
+		.alphaDecay(0.1)
+		.on('tick', tick)
+
+
+	var init_decay;
+	init_decay = setTimeout(function(){
+		simulation.alphaDecay(0.1);
+	}, 8000);
+
+	var buttons = d3.select('body').append('div');
+	buttons.append('button').text('Happiness').attr('value', 'world_happiness_score').classed('d_sel', true)
+	buttons.append('button').text('GDP').attr('value', 'gdp_per_capita').classed('d_sel', true)
+	buttons.append('button').text('School years').attr('value', 'school_years').classed('d_sel', true)
+
+	d3.selectAll('.d_sel').on('click', function(){
+
+		selected_variable = this.value;
+
+		simulation.force('x', d3.forceX(function(d){
+			return xScale(d[selected_variable])
+		}))
+
+		// simulation
+		// 	.alphaDecay(0)
+		// 	.alpha(0.05)
+		// 	.restart()
+
+		clearTimeout(init_decay);
+
+		init_decay = setTimeout(function(){
+			simulation.alphaDecay(0.1);
+		}, 8000);
+	})
+
+
+
+
+
+})
+
+
+
+
+
+
+		</script>
+	</body>
+</html>
