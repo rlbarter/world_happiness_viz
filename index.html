@@ -1,40 +1,272 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+		<link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type='text/css'>
+
 		<meta charset="utf-8">
 		<title>What do the happiest countries in the world have in common?</title>
 		<script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
 		<style type="text/css">
 
+		body {
+		  /*overflow: hidden;*/
+		  margin: 0;
+		  font-size: 14px;
+		  font-family: "Helvetica Neue", Helvetica;
+		}
+
 		div.tooltip {
 			position: absolute;
-			text-align: center;
-			width: 60px;
-			height: 28px;
-			padding: 2px;
-			font: 12px sans-serif;
-			background: none;
-			border: 0px;
-			border-radius: 8px;
-			pointer-events: none;
+			top: 100px;
+			left: 100px;
+		  -moz-border-radius:5px;
+			border-radius: 5px;
+		  border: 2px solid #000;
+		  background: #fff;
+			opacity: .9;
+		  color: black;
+			padding: 10px;
+			width: 300px;
+			font-size: 12px;
+			z-index: 10;
 		}
+
+		div.tooltip .title {
+			font-size: 13px;
+		}
+
+		div.tooltip .name {
+		  font-weight:bold;
+		}
+
+
+
+		#footer {
+				  position: absolute;
+				  top: 0;
+				  z-index: 1;
+				  display: block;
+				  font-size: 36px;
+				  font-weight: 300;
+				  text-shadow: 0 1px 0 #fff;
+				  top: 30px;
+				  left: 30px;
+				  text-align: left;
+				}
+
+				#owner{
+				  position: absolute;
+				  z-index: 1;
+				  display: block;
+				  font-weight: 300;
+				  text-shadow: 0 1px 0 #fff;
+				  top: 500px;
+				  left: 30px;
+				  text-align: left;
+				  color: #474747;
+				  padding-bottom: 20px;
+				  font-size: 10px;
+				}
+
+				#SideText{
+					font-family: "Helvetica Neue", Helvetica;
+				  position: absolute;
+				  display: block;
+				  font-size: 12px;
+				  color: #474747;
+				  top: 170px;
+				  left: 80px;
+				  width: 800px;
+				}
+
+				#BelowLeftText{
+				  position: absolute;
+				  font-size: 14px;
+				  color: #474747;
+				  top: 430px;
+				  left: 120px;
+				  width: 1000px;
+				}
+
+
+				#BelowRightText{
+				  position: absolute;
+				  font-size: 14px;
+				  color: #474747;
+				  top: 430px;
+				  left: 850px;
+				  width: 1000px;
+				}
+
+				line {
+				  stroke: #000;
+				  stroke-width: 1.px;
+				}
+
+				.hint {
+				  position: absolute;
+				  left: 0;
+				  width: 900px;
+				  font-size: 12px;
+				  color: #999;
+				}
+
+				text {
+				  font-size: 10px;
+				}
+
+				.titles{
+				  font-size: 14px;
+				}
+
+				.annotate{
+				  font-size: 11px;
+				  fill: #474747;
+				}
+
+				path.chord {
+				  fill-opacity: .80;
+				}
+
+				.pTitle {
+				   font-size: 16px;
+				   text-shadow: 0 1px 0 #fff;
+				   fill: #474747;
+				   font-weight: bold;
+				}
+
+				.survey {
+				  font-size: 10px;
+				}
+
+				#buttons {
+					position: absolute;
+					top: 150px;
+					left: 50px;
+					display:inline-block;
+					 padding:0.35em 1.2em;
+					 border:0.1em solid #FFFFFF;
+					 margin:0 0.3em 0.3em 0;
+					 border-radius:0.12em;
+					 box-sizing: border-box;
+					 text-decoration:none;
+					 font-family:'Roboto',sans-serif;
+					 font-weight:300;
+					 color:#FFFFFF;
+					 text-align:center;
+					 transition: all 0.2s;
+				}
+
+
+				#chart {
+					position: absolute;
+					top: 250px;
+					left: 50px;
+					display:inline-block;
+					 padding:0.35em 1.2em;
+					 margin:0 0.3em 0.3em 0;
+					 border-radius:0.12em;
+					 box-sizing: border-box;
+					 text-decoration:none;
+					 transition: all 0.2s;
+				}
+
+			#buttons.hover{
+			 color:#000000;
+			 background-color:#FFFFFF;
+			}
+
+
 
 		</style>
 		<svg width="960" height="200"></svg>
 	</head>
 	<body>
-		<div id = "variableDropdown"></div>
+
+
+		<div id="body">
+	      <div id="footer">
+	        What do the happiest countries in the world have in common?
+					<div class="hint">
+						<span>Every year the World Happiness Report is released based on a worldwide survey aimed at evaluating the average population happiness of each country worldwide.<span/></br>
+						<span>What other factors are correlated with happiness? Click on a feature name below to see how the feature is related to happiness.</span></br>
+						<span>Mouse over a bubble to identify country. Click on a bubble to highlight it and follow its journey through the visualization.</span>
+					</div>
+		    </div>
+				<div id="buttons"></div>
+				<div id="SideText">
+				  <p id="p0" class="pTitle Side">Happiness score</p>
+			 	  <p id="p1" class="Side">Happiness is measured based on an the average happiness score collected in an annual worldwide survey.</p>
+					<p id="p2" class="Side">According to this survey, Scandinavian countries seem to be the happiest in the world, with Israel, Costa Rica, New Zealand and Australia up there too. All bubbles are colored based on their happiness.</p>
+			  </div>
+			  <div id="chart"></div>
+			  <div id="BelowLeftText">
+					<p>
+						Less
+					</p>
+				  </div>
+					<div id="BelowRightText">
+					<p>
+						More
+					</p>
+			  </div>
+			  <div id="owner">Analysis and Visualization created by <A HREF="http://www.rebeccabarter.com/">Rebecca Barter</A></div>
+		</div>
+
 		<script type="text/javascript">
 		// code originated from https://bl.ocks.org/maegul/7d8e7342c649fdc077a6984e52da4b62
+		// helpful: http://bl.ocks.org/nbremer/7658623
+		// also helpful: https://github.com/vlandham/bubble_chart
+
 
 		// set page dimensions
-
 var width = 960,
 	height = 250,
 	radius = 10;
-	padding = 10;
+	padding = 100;
 
-var svg = d3.select('body').append('svg')
+var buttons = d3.selectAll('#buttons').style("font-family", "Roboto").attr("stroke", "white")
+buttons.append('button')
+			 .text('Happiness')
+			 .attr('value', 'world_happiness_score')
+			 .classed('d_sel', true)
+buttons.append('button')
+			 .text('GDP')
+			 .attr('value', 'gdp_per_capita')
+			 .classed('d_sel', true)
+buttons.append('button')
+			 .text('School years')
+			 .attr('value', 'school_years')
+			 .classed('d_sel', true)
+buttons.append('button')
+			 .text('Sustainable economic development')
+			 .attr('value', 'sustainable_economic_development_assessment')
+			 .classed('d_sel', true)
+buttons.append('button')
+			 .text('Employment rate')
+			 .attr('value', 'employment_rate')
+			 .classed('d_sel', true)
+buttons.append('button')
+			 .text('Health expenditure')
+			 .attr('value', 'health_expenditure_per_person')
+			 .classed('d_sel', true)
+buttons.append('button')
+			 .text('Government effectiveness')
+			 .attr('value', 'government_effectiveness')
+			 .classed('d_sel', true)
+buttons.append('button')
+			 .text('Female MPs')
+			 .attr('value', 'women_mps_pct')
+			 .classed('d_sel', true)
+buttons.append('button')
+			 .text('Control of corruption')
+			 .attr('value', 'control_of_corruption')
+			 .classed('d_sel', true)
+
+
+
+
+var svg = d3.select('#chart').append('svg')
 			.attr('width', width)
 			.attr('height', height)
 
@@ -47,21 +279,43 @@ var div = d3.select("body").append("div")
 var formatValue = d3.format(".2n");
 
 var selected_variable = 'world_happiness_score';
+var selected_variable_scaled = 'world_happiness_score_scaled';
+
+
+
+
 
 d3.csv('country_data_non_missing.csv', function(data){
-
+console.log(data)
 	// define some useful scales
 	var radiusScale = d3.scaleLinear()
 		.domain(d3.extent(data, function(d) { return parseFloat(d.population) }))
-		.range([4, 25]);
-	var scaleColor = d3.scaleOrdinal()
+		.range([8, 35]);
+	var scaleColor = d3.scaleSequential()
+  .domain([0, 1])
+  .interpolator(d3.interpolateViridis);;
+	var scaleStroke = d3.scaleOrdinal()
 		.domain(["Scandinavian Europe", "Europe", "Israel", "New Zealand", "NA"])
-		.range(["#66c2a5", "#a6d854", "#fc8d62", "#8da0cb", "#D3D3D3"]);
+		.range(["#338F72", "#73A521", "#C95A2F", "#5A6D98", "#A0A0A0"]);
 	var xScale = d3.scaleLinear()
 		.rangeRound([padding, width - padding])
 
+	// a function to highlight points when clicked
+	var toggleHighlight = (function(){
+		 var current_stroke_width = 0.5
+		 var current_stroke = "black"
+
+	    return function(){
+					current_stroke_width = current_stroke_width == 0.5 ? 3 : 0.5
+					current_stroke = current_stroke == "black" ? "red" : "black"
+	        d3.select(this).style("stroke-width", current_stroke_width)
+						.style("stroke", current_stroke);
+	    }
+	})();
+
 	// set domain for selected variable
-	xScale.domain(d3.extent(data, function(d) { return d[selected_variable]; }));
+	xScale.domain(d3.extent(data, function(d) { return d[selected_variable_scaled]; }));
+
 
 
 	function tick(){
@@ -76,28 +330,40 @@ d3.csv('country_data_non_missing.csv', function(data){
 		.data(data)
 		.enter().append('circle').classed('circ', true)
 		.attr('r', function(d) { return radiusScale(d.population); })
-		.attr('cx', function(d){ return xScale(d[selected_variable]); })
+		.attr('cx', function(d){ return xScale(d[selected_variable_scaled]); })
 		.attr('cy', function(){ return height/2; })
-		.attr("fill", function(d) { return scaleColor(d.region); })
-		.on('click', function(){
-			var circ = d3.select(this);
+		.attr("fill", function(d) { return scaleColor(d.world_happiness_score_scaled); })
+		.attr("stroke", "black")
+		.attr("stroke-width", 0.5)
+		.on('click', toggleHighlight)
 
-			circ.style('stroke', '#56C6D8')
-				.style('stroke-width', 3)
-		})
+
+		function showDetail(d) {
+			// change outline to indicate hover state.
+			d3.select(this).attr('stroke', 'black');
+
+			var content = '<span class="name">Title: </span><span class="value">' +
+										d.name +
+										'</span><br/>' +
+										'<span class="name">Amount: </span><span class="value">$' +
+										addCommas(d.value) +
+										'</span><br/>' +
+										'<span class="name">Year: </span><span class="value">' +
+										d.year +
+										'</span>';
+			tooltip.showTooltip(content, d3.event);
+		}
 
 		circles.on("mouseover", function(d) {
 					div.transition()
-							.duration(200)
+							.duration(100)
 							.style("opacity", .9);
 					div	.text(d.country + "\n"  + selected_variable + ": " + formatValue(d[selected_variable]))
-							.style("left", (d3.event.pageX) + "px")
+							.style("left", (d3.event.pageX + 28) + "px")
 							.style("top", (d3.event.pageY - 28) + "px");
 					d3.select(this)
-						.attr("fill", scaleColor(d.region))
-						.attr("stroke", "#56C6D8")
-						.attr("stroke-width", 3)
-						.attr("r", function(d) { return radiusScale(d.population) + 3; });
+						.attr("stroke", "black")
+						.attr("stroke-width", 3);
 					})
 
 			.on("mouseout", function(d) {
@@ -105,8 +371,9 @@ d3.csv('country_data_non_missing.csv', function(data){
 							.duration(500)
 							.style("opacity", 0);
 					d3.select(this)
-						.attr("fill", function(d) {return scaleColor(d.region); })
-						.attr("stroke-width", 0)
+						.attr("fill", function(d) {return scaleColor(d.world_happiness_score_scaled); })
+						.attr("stroke", "black")
+						.attr("stroke-width", 0.5)
 						.attr("r", function(d) { return radiusScale(d.population); });
 			});
 
@@ -114,10 +381,10 @@ d3.csv('country_data_non_missing.csv', function(data){
 
 	var simulation = d3.forceSimulation(data)
 		.force('x', d3.forceX(function(d){
-				return xScale(d[selected_variable])
-			}).strength(1)
+				return xScale(d[selected_variable_scaled])
+			}).strength(4)
 		)
-		.force('y', d3.forceY(height/4).strength(0.5))
+		.force('y', d3.forceY(height/2).strength(0.08))
 		.force('collide', d3.forceCollide(function(d) { return radiusScale(d.population); }))
 		.alpha(0.05)
 		.alphaTarget(0.2)
@@ -127,20 +394,18 @@ d3.csv('country_data_non_missing.csv', function(data){
 
 	var init_decay;
 	init_decay = setTimeout(function(){
-		simulation.alphaDecay(0.1);
+		simulation.alphaDecay(0.5);
 	}, 8000);
-
-	var buttons = d3.select('body').append('div');
-	buttons.append('button').text('Happiness').attr('value', 'world_happiness_score').classed('d_sel', true)
-	buttons.append('button').text('GDP').attr('value', 'gdp_per_capita').classed('d_sel', true)
-	buttons.append('button').text('School years').attr('value', 'school_years').classed('d_sel', true)
 
 	d3.selectAll('.d_sel').on('click', function(){
 
 		selected_variable = this.value;
+		selected_variable_scaled = this.value + '_scaled';
+		console.log(selected_variable)
+		console.log(selected_variable_scaled)
 
 		simulation.force('x', d3.forceX(function(d){
-			return xScale(d[selected_variable])
+			return xScale(d[selected_variable_scaled])
 		}))
 
 		// simulation
@@ -153,6 +418,45 @@ d3.csv('country_data_non_missing.csv', function(data){
 		init_decay = setTimeout(function(){
 			simulation.alphaDecay(0.1);
 		}, 8000);
+
+		if(selected_variable == "world_happiness_score") {
+			d3.select("#p0").transition().duration(200).delay(200).style("opacity", 1).text("Happiness score");
+			d3.select("#p1").transition().duration(200).delay(200).style("opacity", 1).text("Happiness is measured based on an the average happiness score collected in an annual worldwide survey.");
+			d3.select("#p2").transition().duration(200).delay(200).style("opacity", 1).text("According to this survey, Scandinavian countries seem to be the happiest in the world, with Israel, Costa Rica, New Zealand and Australia up there too. All bubbles are colored based on their happiness.");
+		} else if (selected_variable == "gdp_per_capita") {
+			d3.select("#p0").transition().duration(200).delay(200).style("opacity", 1).text("GDP per capita");
+			d3.select("#p1").transition().duration(200).delay(200).style("opacity", 1).text("GDP per capita measures the value of a country's economic activity relative to the size of its population.");
+			d3.select("#p2").transition().duration(200).delay(200).style("opacity", 1).text("The countries with the highest GDP per capita are Luxemborg and Singapore. In general it does seem as though happier countries have higher GDP per capita.");
+		} else if (selected_variable == "school_years") {
+			d3.select("#p0").transition().duration(200).delay(200).style("opacity", 1).text("Years of schooling");
+			d3.select("#p1").transition().duration(200).delay(200).style("opacity", 1).text("The countries whose citizens spend the most years in school are Australia, Iceland, and Belgium, each with an average of 20 years of schooling. Each of these countries also rank fairly highly on the happiness scales.");
+			d3.select("#p2").transition().duration(200).delay(200).style("opacity", 1).text("There seems to be a general correlation between happiness and school years, with several exceptions such as Greece with an average of 18 years of schooling, but is less happy than their school-length counterparts.");
+		} else if (selected_variable == "sustainable_economic_development_assessment") {
+			d3.select("#p0").transition().duration(200).delay(200).style("opacity", 1).text("Sustainable economic development");
+			d3.select("#p1").transition().duration(200).delay(200).style("opacity", 1).text("The sustainable economic development assessment is based on 40 indicators of sustainability, economics and investment.");
+			d3.select("#p2").transition().duration(200).delay(200).style("opacity", 1).text("The happiest countries also tend to have the highest sustainable economic development. However, Israel and Costa Rica, both of which are considered very happy countries have lower sustainable economic development than their happiness counterparts.");
+		} else if (selected_variable == "employment_rate") {
+			d3.select("#p0").transition().duration(200).delay(200).style("opacity", 1).text("Employment rate");
+			d3.select("#p1").transition().duration(200).delay(200).style("opacity", 1).text("The employment rate is the proportion of the working age population who are employed. Most countries have fairly high employment rates.");
+			d3.select("#p2").transition().duration(200).delay(200).style("opacity", 1).text("There does NOT appear to be a strong correlation between employment rate and happiness.");
+		} else if (selected_variable == "health_expenditure_per_person") {
+			d3.select("#p0").transition().duration(200).delay(200).style("opacity", 1).text("Health expenditure");
+			d3.select("#p1").transition().duration(200).delay(200).style("opacity", 1).text("Health expenditure is calculated per person. Despite its lack of a universal health care system, the United States has the highest healthcare expenditure per person in the world.");
+			d3.select("#p2").transition().duration(200).delay(200).style("opacity", 1).text("Overall health expenditure per person appears to be strongly correlated with happiness.");
+		} else if (selected_variable == "government_effectiveness") {
+			d3.select("#p0").transition().duration(200).delay(200).style("opacity", 1).text("Government effectiveness");
+			d3.select("#p1").transition().duration(200).delay(200).style("opacity", 1).text("Government effectiveness measures the percieved quality of public services, civil service, policy formation, government commitment and is measured on a scale from -2.5 to +2.5");
+			d3.select("#p2").transition().duration(200).delay(200).style("opacity", 1).text("There appears to be a correlation of government effectiveness with happiness. However Costa Rica, which is an apparently happy country has surprisingly low governemnt effectiveness score, and Botswana which is an apparently very unhappy country has a surprisingly high governemnt effectiveness score.");
+		} else if (selected_variable == "women_mps_pct") {
+			d3.select("#p0").transition().duration(200).delay(200).style("opacity", 1).text("Proportion of female MPs");
+			d3.select("#p1").transition().duration(200).delay(200).style("opacity", 1).text("The proportion of MPs that are women does NOT seem to be particularly correlated with happiness.");
+			d3.select("#p2").transition().duration(200).delay(200).style("opacity", 1).text("");
+		} else if (selected_variable == "control_of_corruption") {
+			d3.select("#p0").transition().duration(200).delay(200).style("opacity", 1).text("Control of corruption");
+			d3.select("#p1").transition().duration(200).delay(200).style("opacity", 1).text("The governemnt's percieved control of corruption appears to be somewhat correlated with happiness, despite some seemingly unhappy countries such as Botswana having surprisngly high control of corruption, and some seemingly happy countries such as Costa Rica, having lower control of corruption.");
+			d3.select("#p2").transition().duration(200).delay(200).style("opacity", 1).text(" ");
+		};
+
 	})
 
 
