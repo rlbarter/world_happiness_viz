@@ -46,7 +46,7 @@
 				  top: 0;
 				  z-index: 1;
 				  display: block;
-				  font-size: 36px;
+				  font-size: 30px;
 				  font-weight: 300;
 				  text-shadow: 0 1px 0 #fff;
 				  top: 30px;
@@ -76,7 +76,7 @@
 				  color: #474747;
 				  top: 190px;
 				  left: 65px;
-				  width: 900px;
+				  width: 800px;
 					font-weight: 300;
 				  text-shadow: 0 1px 0 #fff;
 				}
@@ -99,7 +99,7 @@
 				  font-size: 14px;
 				  color: #474747;
 				  top: 340px;
-					right: 150px;
+					left: 780px;
   				width: 110px;
 					text-align: center;
 					font-weight: 500;
@@ -149,8 +149,8 @@
 
 				#buttons {
 					position: absolute;
-					top: 150px;
-					left: 50px;
+					top: 140px;
+					left: 30px;
 					display:inline-block;
 					 padding:0.35em 1.2em;
 					 border:0.1em solid #FFFFFF;
@@ -165,7 +165,7 @@
 				#chart {
 					position: absolute;
 					top: 250px;
-					left: 120px;
+					left: 90px;
 					display:inline-block;
 					 padding:0.35em 1.2em;
 					 margin:0 0.3em 0.3em 0;
@@ -251,7 +251,7 @@
 
 
 		// set page dimensions
-var width = 800,
+var width = 750,
 	height = 250,
 	radius = 10;
 	padding = 100;
@@ -260,6 +260,7 @@ var width = 800,
 var buttons = d3.selectAll('#buttons')
 buttons.append('button')
 			 .text('Happiness')
+			 .style("font-size", "10px")
 			 .style("font-family", "Helvetica Neue")
 			 .style("padding", "8px")
 			 .style("color", "#454545")
@@ -283,6 +284,7 @@ buttons.append('button')
 			 })
 buttons.append('button')
 			 .text('GDP')
+			 .style("font-size", "10px")
 			 .style("font-family", "Helvetica Neue")
 			 .style("padding", "8px")
 			 .style("color", "#454545")
@@ -306,6 +308,7 @@ buttons.append('button')
 			 })
 buttons.append('button')
 			 .text('School years')
+			 .style("font-size", "10px")
 			 .style("font-family", "Helvetica Neue")
 			 .style("padding", "8px")
 			 .style("color", "#454545")
@@ -329,6 +332,7 @@ buttons.append('button')
 			 })
 buttons.append('button')
 			 .text('Sustainable economic development')
+			 .style("font-size", "10px")
 			 .style("font-family", "Helvetica Neue")
 			 .style("padding", "8px")
 			 .style("color", "#454545")
@@ -352,6 +356,7 @@ buttons.append('button')
 			 })
 buttons.append('button')
 			 .text('Employment rate')
+			 .style("font-size", "10px")
 			 .style("font-family", "Helvetica Neue")
 			 .style("padding", "8px")
 			 .style("color", "#454545")
@@ -375,6 +380,7 @@ buttons.append('button')
 			 })
 buttons.append('button')
 			 .text('Health expenditure')
+			 .style("font-size", "10px")
 			 .style("font-family", "Helvetica Neue")
 			 .style("padding", "8px")
 			 .style("color", "#454545")
@@ -398,6 +404,7 @@ buttons.append('button')
 			 })
 buttons.append('button')
 			 .text('Government effectiveness')
+			 .style("font-size", "10px")
 			 .style("font-family", "Helvetica Neue")
 			 .style("padding", "8px")
 			 .style("color", "#454545")
@@ -421,6 +428,7 @@ buttons.append('button')
 			 })
 buttons.append('button')
 			 .text('Female MPs')
+			 .style("font-size", "10px")
 			 .style("font-family", "Helvetica Neue")
 			 .style("padding", "8px")
 			 .style("color", "#454545")
@@ -444,6 +452,7 @@ buttons.append('button')
 			 })
 buttons.append('button')
 			 .text('Control of corruption')
+			 .style("font-size", "10px")
 			 .style("font-family", "Helvetica Neue")
 			 .style("padding", "8px")
 			 .style("color", "#454545")
